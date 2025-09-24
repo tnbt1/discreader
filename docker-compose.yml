@@ -1,0 +1,39 @@
+services:
+  discord-bot:
+    build: .
+    container_name: discord-voice-bot
+    restart: always
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - VOICEVOX_URL=http://voicevox:50021
+      - SPEAKER_ID=${SPEAKER_ID:-2}
+      - VOICE_SPEED=${VOICE_SPEED:-1.0}
+      - VOICE_PITCH=${VOICE_PITCH:-0.0}
+      - VOICE_INTONATION=${VOICE_INTONATION:-1.0}
+      - VOICE_VOLUME=${VOICE_VOLUME:-1.0}
+      - MAX_MESSAGE_LENGTH=${MAX_MESSAGE_LENGTH:-100}
+    volumes:
+      - ./bot.py:/app/bot.py:ro
+      - ./logs:/app/logs
+    depends_on:
+      - voicevox
+    networks:
+      - voice-bot-network
+
+  voicevox:
+    image: voicevox/voicevox_engine:cpu-latest
+    container_name: voicevox-engine
+    restart: always
+    environment:
+      - VV_CPU_NUM_THREADS=${VV_CPU_NUM_THREADS:4}
+    ports:
+      - 50021:50021
+    networks:
+      - voice-bot-network
+
+networks:
+  voice-bot-network:
+    driver: bridge
+
+volumes:
+  voicevox_data:

@@ -1,0 +1,8 @@
+.env
+*.pyc
+__pycache__/
+temp_voice.wav
+logs/
+user_settings.json
+venv/
+.DS_Store
