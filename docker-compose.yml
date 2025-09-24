@@ -25,7 +25,7 @@ services:
     container_name: voicevox-engine
     restart: always
     environment:
-      - VV_CPU_NUM_THREADS=${VV_CPU_NUM_THREADS:4}
+      - VV_CPU_NUM_THREADS=${VV_CPU_NUM_THREADS:-4}
     ports:
       - 50021:50021
     networks:
